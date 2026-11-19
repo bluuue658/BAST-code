@@ -20,7 +20,6 @@ from dataloaders.dataset import *
 from networks.net_factory import net_factory
 from utils.BCP_utils import context_mask, update_ema_variables
 
-# ---- 导入增强模块 ----
 from BAST import (
     ensemble_pseudo_label,
     boundary_weight_map,
@@ -46,18 +45,17 @@ parser.add_argument('--seed', type=int,  default=1337, help='random seed')
 parser.add_argument('--consistency', type=float, default=1.0, help='consistency')
 parser.add_argument('--consistency_rampup', type=float, default=40.0, help='consistency_rampup')
 parser.add_argument('--magnitude', type=float,  default=10.0, help='magnitude')
-# -- setting of BCP
+
 parser.add_argument('--u_weight', type=float, default=0.5, help='weight of unlabeled pixels')
 parser.add_argument('--mask_ratio', type=float, default=2/3, help='ratio of mask/image')
-# -- setting of mixup
+
 parser.add_argument('--u_alpha', type=float, default=2.0, help='unlabeled image ratio of mixuped image')
 parser.add_argument('--loss_weight', type=float, default=0.5, help='loss weight of unimage term')
 
-# ========== 新增参数 ==========
-# Ensemble
+
 parser.add_argument('--ensemble_alpha', type=float, default=0.7,
                     help='Teacher weight in ensemble. 1.0=off (original BCP), 0.7=recommended')
-# Boundary weighting
+
 parser.add_argument('--enable_boundary', type=int, default=1,
                     help='Enable boundary-weighted loss. 0=off, 1=on')
 parser.add_argument('--lambda_boundary', type=float, default=1.0,
@@ -66,7 +64,7 @@ parser.add_argument('--boundary_radius', type=int, default=1,
                     help='Boundary band width in voxels')
 parser.add_argument('--boundary_rampup', type=int, default=5000,
                     help='Iterations before boundary loss reaches full strength')
-# Auxiliary head
+
 parser.add_argument('--enable_aux_head', type=int, default=1,
                     help='Enable boundary auxiliary head. 0=off, 1=on')
 parser.add_argument('--lambda_aux', type=float, default=0.3,
@@ -428,9 +426,6 @@ def self_train(args, pre_snapshot_path, self_snapshot_path):
                     loss = loss + loss_aux
 
 
-            # ============================================================
-            # Backward + Update
-            # ============================================================
             iter_num += 1
 
             optimizer.zero_grad()
@@ -439,7 +434,7 @@ def self_train(args, pre_snapshot_path, self_snapshot_path):
 
             update_ema_variables(model, ema_model, 0.99)
 
-            # ---- Logging ----
+         
             writer.add_scalar('Self/loss_all', loss, iter_num)
             writer.add_scalar('Self/loss_l', loss_l, iter_num)
             writer.add_scalar('Self/loss_u', loss_u, iter_num)
