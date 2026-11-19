@@ -1,5 +1,3 @@
-"""PROMISE12 datasets using the released case-level split manifests."""
-
 from collections import OrderedDict
 from pathlib import Path, PurePosixPath
 import random
