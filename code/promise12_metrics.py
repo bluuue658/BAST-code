@@ -1,5 +1,3 @@
-"""Subject-level PROMISE12 inference and metrics for the BCP U-Net."""
-
 import csv
 import json
 from pathlib import Path
