@@ -1,11 +1,5 @@
 # BAST: Boundary-Aware Self-Training
 
-Compact code release for **“Boundary-aware self-training for semi-supervised
-MRI segmentation with bidirectional copy–paste”**, published in
-*Biomedical Engineering Letters*.
-
-DOI: https://doi.org/10.1007/s13534-026-00636-2
-
 ## Scope
 
 This repository contains the BAST-specific modules and dataset training entry
