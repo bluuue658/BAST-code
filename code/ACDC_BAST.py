@@ -229,11 +229,11 @@ def mix_loss_enhanced(output, img_l, patch_l, mask, l_weight=1.0, u_weight=0.5,
         image_weight, patch_weight = u_weight, l_weight
     patch_mask = 1 - mask
 
-    # Dice loss (区域级，不做边界加权，和原版一致)
+
     loss_dice = dice_loss(output_soft, img_l.unsqueeze(1), mask.unsqueeze(1)) * image_weight
     loss_dice += dice_loss(output_soft, patch_l.unsqueeze(1), patch_mask.unsqueeze(1)) * patch_weight
 
-    # CE loss (逐像素，可以边界加权)
+ 
     ce_img = CE(output, img_l)
     ce_patch = CE(output, patch_l)
 
@@ -595,7 +595,7 @@ def self_train(args, pre_snapshot_path, snapshot_path):
             mid_channels=args.aux_mid_channels,
             is_2d=True  # ACDC 是 2D
         ).cuda()
-        # 在 load_net_opt 之后 add_param_group，避免 optimizer state 不匹配
+       
         optimizer.add_param_group({'params': aux_head.parameters()})
         logging.info("Boundary Auxiliary Head enabled (in_channels={}, mid_channels={})".format(
             num_classes, args.aux_mid_channels))
@@ -653,7 +653,7 @@ def self_train(args, pre_snapshot_path, snapshot_path):
                     plab_a = get_ACDC_masks(pre_a, nms=1)
                     plab_b = get_ACDC_masks(pre_b, nms=1)
                     img_mask, loss_mask = generate_mask(img_a)
-                    # 可视化用的混合标签 (不参与 loss)
+                  
                     unl_label = ulab_a * img_mask + lab_a * (1 - img_mask)
                     l_label = lab_b * img_mask + ulab_b * (1 - img_mask)
                 consistency_weight = get_current_consistency_weight(iter_num // 150)
@@ -793,7 +793,7 @@ def self_train(args, pre_snapshot_path, snapshot_path):
 
             logging.info('iteration %d: loss: %f, mix_dice: %f, mix_ce: %f' % (iter_num, loss, loss_dice, loss_ce))
 
-            # ---- Visualization (和原版一致) ----
+
             if iter_num % 20 == 0:
                 image = net_input_unl[1, 0:1, :, :]
                 writer.add_image('train/Un_Image', image, iter_num)
@@ -828,10 +828,10 @@ def self_train(args, pre_snapshot_path, snapshot_path):
                     best_performance = performance
                     save_mode_path = os.path.join(snapshot_path, 'iter_{}_dice_{}.pth'.format(iter_num, round(best_performance, 4)))
                     save_best_path = os.path.join(snapshot_path, '{}_best_model.pth'.format(args.model))
-                    # 保存格式: raw state_dict (和原版一致, 与 test_ACDC.py 兼容)
+                
                     torch.save(model.state_dict(), save_mode_path)
                     torch.save(model.state_dict(), save_best_path)
-                    # 额外保存 aux_head
+                   
                     if aux_head is not None:
                         torch.save(aux_head.state_dict(),
                                    os.path.join(snapshot_path, 'aux_head_best.pth'))
