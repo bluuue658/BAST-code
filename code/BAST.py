@@ -1,9 +1,6 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-# ================================================================
-# Module 1: Ensemble Pseudo-Label
-# ================================================================
 def ensemble_pseudo_label(teacher_logit, student_logit=None,
                           alpha=0.7, temperature=0.1, nms_fn=None):
     with torch.no_grad():
@@ -26,9 +23,6 @@ def ensemble_pseudo_label(teacher_logit, student_logit=None,
         s_pred = (s_prob[:, 1] >= 0.5).long()
         agree = float((t_pred == s_pred).float().mean().item())
     return pseudo.long(), conf, agree
-# ================================================================
-# Module 2: Boundary Weight Map
-# ================================================================
 def make_boundary_band(mask, radius=1):
  
     is_2d = (mask.dim() == 3)
@@ -46,9 +40,6 @@ def boundary_weight_map(pseudo_label, lambda_boundary=1.0, radius=1,
     band = make_boundary_band(fg, radius=radius)
     weight = 1.0 + eff_lambda * band.squeeze(1)
     return weight, band
-# ================================================================
-# Module 3: Boundary Auxiliary Head
-# ================================================================
 class BoundaryAuxHead(nn.Module):
     def __init__(self, in_channels=2, mid_channels=16, is_2d=False):
         super().__init__()
