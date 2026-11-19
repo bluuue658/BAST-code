@@ -1,11 +1,3 @@
-"""BCP-repository U-Net baseline and BAST extension for PROMISE12.
-
-The backbone, optimizer, two-stage schedule, EMA teacher, rectangular mask,
-masked Dice+CE, and bidirectional copy-paste follow ``ACDC_BCP_train.py``.
-PROMISE12-specific code is limited to PNG loading, case-level splits, binary
-output, and complete-volume validation/test evaluation.
-"""
-
 import argparse
 import json
 import logging
