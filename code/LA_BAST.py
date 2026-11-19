@@ -549,7 +549,6 @@ if __name__ == "__main__":
             os.makedirs(snapshot_path)
         if os.path.exists(snapshot_path + '/code'):
             shutil.rmtree(snapshot_path + '/code')
-    shutil.copy('../code/LA_BCP_train_enhanced.py', self_snapshot_path)
 
 
     logging.basicConfig(filename=pre_snapshot_path + "/log.txt", level=logging.INFO,
