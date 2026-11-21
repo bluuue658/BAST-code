@@ -26,7 +26,6 @@ from BAST import (
     boundary_aux_loss,
     BoundaryAuxHead,
 )
-
 parser = argparse.ArgumentParser()
 parser.add_argument('--root_path', type=str, default='./data/LA', help='LA data directory')
 parser.add_argument('--exp', type=str,  default='BCP', help='exp_name')
