@@ -147,8 +147,6 @@ def mix_loss_enhanced(output, img_l, patch_l, loss_mask, u_weight=0.5,
         image_weight, patch_weight = u_weight, 1.0
 
     patch_mask = 1 - loss_mask
-
-    output_soft = F.softmax(output, dim=1)
     loss_dice = DICE(output_soft, img_l.unsqueeze(1), loss_mask.unsqueeze(1)) * image_weight
     loss_dice += DICE(output_soft, patch_l.unsqueeze(1), patch_mask.unsqueeze(1)) * patch_weight
 
